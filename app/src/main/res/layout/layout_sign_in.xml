@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingHorizontal="36dp">
+
+    <EditText
+        android:id="@+id/emailInput"
+        style="@style/BaseEditTextStyle"
+        android:layout_width="match_parent"
+        android:hint="@string/stringEmail"
+        android:imeOptions="actionNext"
+        android:inputType="textEmailAddress" />
+
+    <EditText
+        android:id="@+id/passwordInput"
+        style="@style/BaseEditTextStyle"
+        android:layout_width="match_parent"
+        android:layout_marginTop="24dp"
+        android:hint="@string/stringPassword"
+        android:imeOptions="actionDone"
+        android:inputType="textPassword" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/stringNoAccount"
+            android:textColor="@color/colorSecondary"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/signUpButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:fontFamily="@font/montserrat_bold"
+            android:text="@string/stringSignUp"
+            android:textColor="@color/colorPrimary"
+            android:textSize="12sp" />
+    </LinearLayout>
+</LinearLayout>

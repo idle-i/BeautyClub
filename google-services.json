@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "343427352009",
+    "project_id": "beautyclub-9db7f",
+    "storage_bucket": "beautyclub-9db7f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:343427352009:android:e33fc54563c55c84029418",
+        "android_client_info": {
+          "package_name": "com.example.disbeauty"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "343427352009-7pogspprlnar6evnc5ms7du0pbq06vsm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2zep0K_3UPWlGvsRcEQSp0yZeeiSfR1U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "343427352009-7pogspprlnar6evnc5ms7du0pbq06vsm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

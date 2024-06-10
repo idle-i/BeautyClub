@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:visibility="gone"
+    android:paddingHorizontal="36dp">
+
+    <EditText
+        android:id="@+id/nameInput"
+        style="@style/BaseEditTextStyle"
+        android:layout_width="match_parent"
+        android:hint="@string/stringName"
+        android:imeOptions="actionNext"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/emailInput"
+        style="@style/BaseEditTextStyle"
+        android:layout_width="match_parent"
+        android:layout_marginTop="24dp"
+        android:hint="@string/stringEmail"
+        android:imeOptions="actionNext"
+        android:inputType="textEmailAddress" />
+
+
+    <EditText
+        android:id="@+id/phoneInput"
+        style="@style/BaseEditTextStyle"
+        android:layout_width="match_parent"
+        android:layout_marginTop="24dp"
+        android:hint="@string/stringPhoneNumber"
+        android:imeOptions="actionNext"
+        android:inputType="phone" />
+
+    <EditText
+        android:id="@+id/passwordInput"
+        style="@style/BaseEditTextStyle"
+        android:layout_width="match_parent"
+        android:layout_marginTop="24dp"
+        android:hint="@string/stringPassword"
+        android:imeOptions="actionNext"
+        android:inputType="textPassword" />
+
+    <EditText
+        android:id="@+id/repeatPasswordInput"
+        style="@style/BaseEditTextStyle"
+        android:layout_width="match_parent"
+        android:layout_marginTop="24dp"
+        android:hint="@string/stringRepeatPassword"
+        android:imeOptions="actionDone"
+        android:inputType="textPassword" />
+
+    <CheckBox
+        android:id="@+id/masterCheckbox"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_marginTop="12dp"
+        android:buttonTint="@color/colorPrimary"
+        android:paddingHorizontal="6dp"
+        android:text="@string/stringSignUpAsMaster"
+        android:textSize="12sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/stringAlreadyHaveAccount"
+            android:textColor="@color/colorSecondary"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/signInButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:fontFamily="@font/montserrat_bold"
+            android:text="@string/stringSignIn"
+            android:textColor="@color/colorPrimary"
+            android:textSize="12sp" />
+    </LinearLayout>
+</LinearLayout>
