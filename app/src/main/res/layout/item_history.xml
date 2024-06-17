@@ -59,4 +59,24 @@
         app:layout_constraintEnd_toEndOf="@id/namePhoneLabel"
         app:layout_constraintStart_toStartOf="@id/namePhoneLabel"
         app:layout_constraintTop_toBottomOf="@id/namePhoneLabel" />
+
+    <FrameLayout
+        android:id="@+id/canceledLayout"
+        android:layout_width="0dp"
+        android:visibility="gone"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/colorCanceled"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/stringAppointmentHasBeenCanceled"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:textColor="@color/colorWhite" />
+    </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

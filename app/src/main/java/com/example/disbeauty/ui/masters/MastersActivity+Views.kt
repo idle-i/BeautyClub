@@ -1,5 +1,6 @@
 package com.example.disbeauty.ui.masters
 
+import android.content.Context
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -15,15 +16,19 @@ import kotlin.math.abs
 
 fun MastersActivity.addOnClickListeners() {
     binding.confirmButton.setOnClickListener {
-        val currentMaster: Master = masters[binding.mastersViewPager.currentItem]
+        if (!noMasters) {
+            val currentMaster: Master = masters[binding.mastersViewPager.currentItem]
 
-        TempData.currentOrder.apply {
-            masterId = currentMaster.id ?: ""
-            masterName = currentMaster.name ?: ""
-            masterPhoneNumber = currentMaster.phoneNumber ?: ""
+            TempData.currentOrder.apply {
+                masterId = currentMaster.id ?: ""
+                masterName = currentMaster.name ?: ""
+                masterPhoneNumber = currentMaster.phoneNumber ?: ""
+            }
+
+            showDateTimeActivity()
+        } else {
+            finish()
         }
-
-        showDateTimeActivity()
     }
 }
 
@@ -41,27 +46,45 @@ fun MastersActivity.showViews() {
             override fun onAnimationStart(p0: Animation?) {}
 
             override fun onAnimationEnd(p0: Animation?) {
-                getMasters(TempData.currentOrder.id) {
+                getMasters(
+                    TempData.currentOrder.id,
+                    getSharedPreferences("data", Context.MODE_PRIVATE)
+                        .getString(
+                            "userCity",
+                            "KjUCtYpeCDMSSYPu4oVv"
+                        ) ?: "KjUCtYpeCDMSSYPu4oVv"
+                ) {
+                    addOnClickListeners()
+
                     masters = it.result.toObjects(Master::class.java)
 
                     binding.masterProgressBar.visibility = View.GONE
 
-                    binding.mastersViewPager.apply {
-                        orientation = ViewPager2.ORIENTATION_HORIZONTAL
+                    noMasters = masters.isEmpty()
 
-                        offscreenPageLimit = 3
-                        clipToPadding = false
-                        clipChildren = false
+                    if (masters.isEmpty()) {
+                        binding.noMastersLabel.visibility = View.VISIBLE
+                    } else {
+                        binding.confirmButton.visibility = View.VISIBLE
 
-                        getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
-                        setPadding(dpToPx(64), 0, dpToPx(64), 0)
+                        binding.mastersViewPager.apply {
+                            orientation = ViewPager2.ORIENTATION_HORIZONTAL
 
-                        setPageTransformer { page, position ->
-                            page.scaleY = 1 - (0.2f * abs(position))
+                            offscreenPageLimit = 3
+                            clipToPadding = false
+                            clipChildren = false
+
+                            getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
+                            setPadding(dpToPx(64), 0, dpToPx(64), 0)
+
+                            setPageTransformer { page, position ->
+                                page.scaleY = 1 - (0.2f * abs(position))
+                            }
+
+                            adapter = MastersAdapter(this@showViews, masters)
                         }
-
-                        adapter = MastersAdapter(this@showViews, masters)
                     }
+
                 }
             }
 

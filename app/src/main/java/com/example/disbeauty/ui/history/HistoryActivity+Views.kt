@@ -11,8 +11,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.disbeauty.R
 import com.example.disbeauty.adapters.HistoryAdapter
 import com.example.disbeauty.data.dto.Order
-import com.example.disbeauty.data.firebase.FirebaseInstances
-import com.example.disbeauty.ui.chat.ChatActivity
+import com.example.disbeauty.ui.city.CityActivity
+import com.example.disbeauty.ui.info.InfoActivity
+import com.example.disbeauty.ui.profile.addOnClickListeners
 import com.example.disbeauty.utils.dpToPx
 import java.util.Calendar
 
@@ -39,6 +40,9 @@ fun HistoryActivity.setupViews() {
 }
 
 fun HistoryActivity.showViews() {
+    binding.historyProgressBar.visibility = View.VISIBLE
+    binding.historyRecyclerView.adapter = null
+
     val fadeInAnimation: Animation = AnimationUtils.loadAnimation(
         this,
         R.anim.fade_in
@@ -50,7 +54,15 @@ fun HistoryActivity.showViews() {
 
             override fun onAnimationEnd(p0: Animation?) {
                 getHistory {
-                    history = it.result.toObjects(Order::class.java)
+                    val orders = mutableListOf<Order>()
+
+                    it.result.forEach { task ->
+                        val order = task.toObject(Order::class.java)
+                        order.id = task.id
+                        orders.add(order)
+                    }
+
+                    history = orders
 
                     binding.historyProgressBar.visibility = View.GONE
 
@@ -125,17 +137,15 @@ private fun HistoryActivity.updateRecyclerView(type: HistoryType) {
                 }
                 .sortedBy { it.time }
         ) {
-            val recipientId =
-                if (it.masterId == FirebaseInstances.auth.currentUser?.uid)
-                    it.userId
-                else
-                    it.masterId
+            val intent = Intent(this, InfoActivity::class.java)
+            intent.putExtra("orderId", it.id)
+            intent.putExtra("isMaster", false)
+            startActivityForResult(intent, 1)
 
-            Intent(this, ChatActivity::class.java).apply {
-                putExtra("recipientId", recipientId)
-
-                startActivity(this)
-            }
+            overridePendingTransition(
+                R.anim.fade_in,
+                R.anim.fade_out
+            )
         }
 }
 

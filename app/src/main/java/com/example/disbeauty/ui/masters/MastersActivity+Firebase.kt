@@ -6,10 +6,14 @@ import com.example.disbeauty.data.firebase.FirebaseInstances
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.QuerySnapshot
 
-fun MastersActivity.getMasters(id: String, onLoad: (Task<QuerySnapshot>) -> Unit) {
+fun MastersActivity.getMasters(id: String, cityId: String, onLoad: (Task<QuerySnapshot>) -> Unit) {
     FirebaseInstances.firestore
         .collection(FirebaseConstants.mastersCollection)
         .whereArrayContains(FirebaseConstants.servicesField, id)
+        .whereEqualTo(
+            FirebaseConstants.cityField,
+            cityId
+        )
         .get()
         .addOnCompleteListener { task ->
             if (task.isSuccessful)

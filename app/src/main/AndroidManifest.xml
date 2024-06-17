@@ -12,6 +12,12 @@
         android:theme="@style/Theme.DisBeauty"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ui.info.InfoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.city.CityActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.services_change.ServicesChangeActivity"
             android:exported="false" />
         <activity

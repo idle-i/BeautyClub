@@ -22,7 +22,6 @@
         android:ellipsize="end"
         android:maxLines="1"
         android:textColor="@color/colorText"
-        android:text="asdfghtht"
         android:textSize="16sp"
         app:layout_constraintEnd_toStartOf="@id/arrowImage"
         app:layout_constraintStart_toStartOf="parent"

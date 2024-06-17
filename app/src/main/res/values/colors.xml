@@ -9,4 +9,5 @@
     <color name="colorSecondary">#4D222222</color>
     <color name="colorSecondaryWhite">#CCFFFFFF</color>
     <color name="colorPrimaryBackground">#0D222222</color>
+    <color name="colorCanceled">#4D222222</color>
 </resources>

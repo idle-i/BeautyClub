@@ -20,7 +20,7 @@ import com.example.disbeauty.data.TempData
 import com.example.disbeauty.data.dto.Master
 import com.example.disbeauty.data.dto.Order
 import com.example.disbeauty.data.firebase.FirebaseInstances
-import com.example.disbeauty.ui.chat.ChatActivity
+import com.example.disbeauty.ui.info.InfoActivity
 import com.example.disbeauty.ui.loading.LoadingActivity
 import com.example.disbeauty.ui.profile.ProfileActivity
 import com.example.disbeauty.utils.dpToPx
@@ -89,6 +89,9 @@ fun AppointmentsActivity.setupViews() {
 }
 
 fun AppointmentsActivity.showViews() {
+    binding.historyProgressBar.visibility = View.VISIBLE
+    binding.recyclerView.adapter = null
+
     val fadeInAnimation: Animation = AnimationUtils.loadAnimation(
         this,
         R.anim.fade_in
@@ -100,7 +103,15 @@ fun AppointmentsActivity.showViews() {
 
             override fun onAnimationEnd(p0: Animation?) {
                 getHistory {
-                    history = it.result.toObjects(Order::class.java)
+                    val orders = mutableListOf<Order>()
+
+                    it.result.forEach { task ->
+                        val order = task.toObject(Order::class.java)
+                        order.id = task.id
+                        orders.add(order)
+                    }
+
+                    history = orders
 
                     binding.historyProgressBar.visibility = View.GONE
 
@@ -185,17 +196,15 @@ private fun AppointmentsActivity.updateRecyclerView(type: HistoryType) {
                 }
                 .sortedBy { it.time }
         ) {
-            val recipientId =
-                if (it.masterId == FirebaseInstances.auth.currentUser?.uid)
-                    it.userId
-                else
-                    it.masterId
+            val intent = Intent(this, InfoActivity::class.java)
+            intent.putExtra("orderId", it.id)
+            intent.putExtra("isMaster", true)
+            startActivityForResult(intent, 1)
 
-            Intent(this, ChatActivity::class.java).apply {
-                putExtra("recipientId", recipientId)
-
-                startActivity(this)
-            }
+            overridePendingTransition(
+                R.anim.fade_in,
+                R.anim.fade_out
+            )
         }
 }
 

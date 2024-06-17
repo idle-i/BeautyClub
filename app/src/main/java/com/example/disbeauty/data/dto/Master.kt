@@ -10,4 +10,5 @@ data class Master(
     var workingStartMinute: Int? = 0,
     var workingEndHour: Int? = 21,
     var workingEndMinute: Int? = 0,
+    var city: String? = "KjUCtYpeCDMSSYPu4oVv"
 )

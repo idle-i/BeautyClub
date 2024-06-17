@@ -29,8 +29,11 @@ class HistoryAdapter(
 
         with(holder) {
             binding.serviceLabel.text = order.name
-            binding.priceLabel.text = "${order.price} ₽"
+//            binding.priceLabel.text = "${order.price} ₽"
             binding.namePhoneLabel.text = order.masterName
+
+            if (order.canceled == true)
+                binding.canceledLayout.visibility = View.VISIBLE
 
             binding.dateLabel.text =
                 SimpleDateFormat(

@@ -10,6 +10,7 @@ class MastersActivity : BaseActivity() {
     lateinit var binding: ActivityMastersBinding
 
     var masters: List<Master> = listOf()
+    var noMasters: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,7 +18,6 @@ class MastersActivity : BaseActivity() {
         binding = ActivityMastersBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        addOnClickListeners()
         showViews()
     }
 }

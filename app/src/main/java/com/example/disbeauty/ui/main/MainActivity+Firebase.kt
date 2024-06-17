@@ -1,6 +1,7 @@
 package com.example.disbeauty.ui.main
 
 import com.example.disbeauty.R
+import com.example.disbeauty.data.dto.City
 import com.example.disbeauty.data.firebase.FirebaseConstants
 import com.example.disbeauty.data.firebase.FirebaseInstances
 import com.google.android.gms.tasks.Task
@@ -29,6 +30,22 @@ fun MainActivity.getCategories(onLoad: (Task<QuerySnapshot>) -> Unit) {
         .addOnCompleteListener { task ->
             if (task.isSuccessful)
                 onLoad(task)
+            else
+                showSnackBarMessage(
+                    task.exception?.localizedMessage
+                        ?: getString(R.string.stringUnknownError)
+                )
+        }
+}
+
+fun MainActivity.getCity(id: String, onLoad: (City) -> Unit) {
+    FirebaseInstances.firestore
+        .collection(FirebaseConstants.citiesCollection)
+        .document(id)
+        .get()
+        .addOnCompleteListener { task ->
+            if (task.isSuccessful)
+                task.result.toObject(City::class.java)?.let { onLoad(it) }
             else
                 showSnackBarMessage(
                     task.exception?.localizedMessage

@@ -2,6 +2,7 @@ package com.example.disbeauty.ui.profile
 
 import android.app.TimePickerDialog
 import android.content.Context
+import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.view.View
 import android.view.WindowManager
@@ -9,16 +10,19 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.example.disbeauty.R
+import com.example.disbeauty.data.dto.Order
 import com.example.disbeauty.data.firebase.FirebaseConstants
 import com.example.disbeauty.data.firebase.FirebaseInstances
+import com.example.disbeauty.ui.city.CityActivity
 import com.example.disbeauty.ui.services_change.ServicesChangeActivity
+import java.util.Calendar
+import java.util.Date
 
 
 fun ProfileActivity.showViews() {
@@ -33,49 +37,55 @@ fun ProfileActivity.showViews() {
 
             override fun onAnimationEnd(p0: Animation?) {
                 getProfile { master ->
-                    binding.profileProgressBar.visibility = View.GONE
-                    binding.contentView.visibility = View.VISIBLE
-                    binding.avatarLayout.visibility = View.INVISIBLE
+                    getCity(master.city ?: "KjUCtYpeCDMSSYPu4oVv") { city ->
+                        binding.profileProgressBar.visibility = View.GONE
+                        binding.contentView.visibility = View.VISIBLE
+                        binding.avatarLayout.visibility = View.INVISIBLE
 
-                    if (!master.avatar.isNullOrEmpty())
-                        Glide
-                            .with(this@showViews)
-                            .load(master.avatar)
-                            .addListener(object : RequestListener<Drawable> {
-                                override fun onLoadFailed(
-                                    e: GlideException?,
-                                    model: Any?,
-                                    target: Target<Drawable>?,
-                                    isFirstResource: Boolean
-                                ): Boolean {
-                                    return true
-                                }
+                        if (!master.avatar.isNullOrEmpty())
+                            Glide
+                                .with(this@showViews)
+                                .load(master.avatar)
+                                .addListener(object : RequestListener<Drawable> {
+                                    override fun onLoadFailed(
+                                        e: GlideException?,
+                                        model: Any?,
+                                        target: Target<Drawable>?,
+                                        isFirstResource: Boolean
+                                    ): Boolean {
+                                        return true
+                                    }
 
-                                override fun onResourceReady(
-                                    resource: Drawable?,
-                                    model: Any?,
-                                    target: Target<Drawable>?,
-                                    dataSource: DataSource?,
-                                    isFirstResource: Boolean
-                                ): Boolean {
-                                    binding.avatarLayout.visibility = View.VISIBLE
-                                    binding.avatarImage.setImageDrawable(resource)
+                                    override fun onResourceReady(
+                                        resource: Drawable?,
+                                        model: Any?,
+                                        target: Target<Drawable>?,
+                                        dataSource: DataSource?,
+                                        isFirstResource: Boolean
+                                    ): Boolean {
+                                        binding.avatarLayout.visibility = View.VISIBLE
+                                        binding.avatarImage.setImageDrawable(resource)
 
-                                    return true
-                                }
-                            })
-                            .into(binding.avatarImage)
+                                        return true
+                                    }
+                                })
+                                .into(binding.avatarImage)
 
-                    binding.nameLabel.text = master.name
-                    binding.emailInput.setText(FirebaseInstances.auth.currentUser?.email ?: "")
-                    binding.phoneInput.setText(master.phoneNumber)
+                        binding.nameLabel.text = master.name
+                        binding.emailInput.setText(FirebaseInstances.auth.currentUser?.email ?: "")
+                        binding.phoneInput.setText(master.phoneNumber)
 
-                    workingStartTime = listOf(master.workingStartHour ?: 9, master.workingStartMinute ?: 0)
-                    workingEndTime = listOf(master.workingEndHour ?: 21, master.workingEndMinute ?: 0)
+                        workingStartTime =
+                            listOf(master.workingStartHour ?: 9, master.workingStartMinute ?: 0)
+                        workingEndTime =
+                            listOf(master.workingEndHour ?: 21, master.workingEndMinute ?: 0)
 
-                    setWorkingTimeLabel()
+                        binding.locationLabel.text = city.name
 
-                    this@showViews.master = master
+                        setWorkingTimeLabel()
+
+                        this@showViews.master = master
+                    }
                 }
 
                 addOnClickListeners()
@@ -88,7 +98,6 @@ fun ProfileActivity.showViews() {
     binding.mainContainer.startAnimation(fadeInAnimation)
 }
 
-
 fun ProfileActivity.addOnClickListeners() {
     binding.backButton.setOnClickListener {
         finish()
@@ -96,6 +105,17 @@ fun ProfileActivity.addOnClickListeners() {
 
     binding.workingTimeLayout.setOnClickListener {
         showWorkingTimeStartPickerDialog()
+    }
+
+    binding.locationLayout.setOnClickListener {
+        val intent = Intent(this, CityActivity::class.java)
+        intent.putExtra("isMaster", true)
+        startActivityForResult(intent, 1)
+
+        overridePendingTransition(
+            R.anim.fade_in,
+            R.anim.fade_out
+        )
     }
 
     binding.editButton.setOnClickListener {
@@ -116,8 +136,8 @@ fun ProfileActivity.addOnClickListeners() {
 private fun ProfileActivity.showWorkingTimeStartPickerDialog() {
     TimePickerDialog(
         this,
-        { _, hour, minute ->
-            showWorkingTimeEndPickerDialog(hour, minute)
+        { _, startHour, _ ->
+            showWorkingTimeEndPickerDialog(startHour, 0)
         },
         workingStartTime[0],
         workingStartTime[1],
@@ -132,13 +152,39 @@ private fun ProfileActivity.showWorkingTimeStartPickerDialog() {
 private fun ProfileActivity.showWorkingTimeEndPickerDialog(startHour: Int, startMinute: Int) {
     TimePickerDialog(
         this,
-        { _, hour, minute ->
-            workingStartTime = listOf(startHour, startMinute)
-            workingEndTime = listOf(hour, minute)
+        { _, endHour, _ ->
+            getHistory {
+                val appointments = it.result.toObjects(Order::class.java)
 
-            updateProfile()
+                for (appointment in appointments) {
+                    val date = Date(appointment.time)
+                    val calendar = Calendar.getInstance()
+                    calendar.time = date
+                    val appointmentHour = calendar.get(Calendar.HOUR_OF_DAY)
+                    println()
 
-            setWorkingTimeLabel()
+                    if (startHour > endHour) {
+                        if (!(startHour..23).contains(appointmentHour)
+                            && !(0..endHour).contains(appointmentHour)
+                        ) {
+                            showSnackBarMessage(getString(R.string.stringCantChangeWorkingTimeHaveAppointments))
+                            return@getHistory
+                        }
+                    } else {
+                        if (!(startHour..endHour).contains(appointmentHour)) {
+                            showSnackBarMessage(getString(R.string.stringCantChangeWorkingTimeHaveAppointments))
+                            return@getHistory
+                        }
+                    }
+                }
+
+                workingStartTime = listOf(startHour, startMinute)
+                workingEndTime = listOf(endHour, 0)
+
+                updateProfile()
+
+                setWorkingTimeLabel()
+            }
         },
         workingEndTime[0],
         workingEndTime[1],
@@ -151,7 +197,8 @@ private fun ProfileActivity.showWorkingTimeEndPickerDialog(startHour: Int, start
 }
 
 private fun ProfileActivity.setWorkingTimeLabel() {
-    binding.workingTimeLabel.text = "с ${workingStartTime[0]}:${if (workingStartTime[1] < 10) "0" else ""}${workingStartTime[1]} до с ${workingEndTime[0]}:${if (workingEndTime[1] < 10) "0" else ""}${workingEndTime[1]}"
+    binding.workingTimeLabel.text =
+        "с ${workingStartTime[0]}:${if (workingStartTime[1] < 10) "0" else ""}${workingStartTime[1]} до с ${workingEndTime[0]}:${if (workingEndTime[1] < 10) "0" else ""}${workingEndTime[1]}"
 }
 
 private fun ProfileActivity.updateProfile() {

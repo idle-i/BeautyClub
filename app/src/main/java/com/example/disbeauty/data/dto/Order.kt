@@ -11,5 +11,6 @@ data class Order(
     var masterName: String = "",
     var masterPhoneNumber: String = "",
     var time: Long = -1,
-    var category: String? = ""
+    var category: String? = "",
+    var canceled: Boolean? = false
 )

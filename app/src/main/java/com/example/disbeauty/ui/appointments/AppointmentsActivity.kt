@@ -1,5 +1,6 @@
 package com.example.disbeauty.ui.appointments
 
+import android.content.Intent
 import android.os.Bundle
 import com.example.disbeauty.base.BaseActivity
 import com.example.disbeauty.data.dto.Order
@@ -20,5 +21,13 @@ class AppointmentsActivity : BaseActivity() {
 
         setupViews()
         showViews()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == 1 && data?.getBooleanExtra("shouldUpdate", false) == true) {
+            showViews()
+        }
     }
 }

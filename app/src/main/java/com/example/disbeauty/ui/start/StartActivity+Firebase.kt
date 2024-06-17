@@ -103,28 +103,32 @@ fun StartActivity.signUp(asMaster: Boolean, onLoad: () -> Unit) {
                                 .set(TempData.currentUser)
                                 .addOnCompleteListener {
                                     if (it.isSuccessful) {
-                                        val master = Master(
-                                            FirebaseInstances.auth.currentUser?.uid,
-                                            TempData.currentUser.name,
-                                            null,
-                                            null,
-                                            TempData.currentUser.phoneNumber
-                                        )
+                                        if (asMaster) {
+                                            val master = Master(
+                                                FirebaseInstances.auth.currentUser?.uid,
+                                                TempData.currentUser.name,
+                                                null,
+                                                null,
+                                                TempData.currentUser.phoneNumber
+                                            )
 
-                                        FirebaseInstances.firestore
-                                            .collection(FirebaseConstants.mastersCollection)
-                                            .document(FirebaseInstances.auth.currentUser?.uid ?: "")
-                                            .set(master)
-                                            .addOnCompleteListener { masterTask ->
-                                                if (masterTask.isSuccessful)
-                                                    onLoad()
-                                                else {
-                                                    showSnackBarMessage(
-                                                        masterTask.exception?.localizedMessage
-                                                            ?: getString(R.string.stringUnknownError)
-                                                    )
+                                            FirebaseInstances.firestore
+                                                .collection(FirebaseConstants.mastersCollection)
+                                                .document(FirebaseInstances.auth.currentUser?.uid ?: "")
+                                                .set(master)
+                                                .addOnCompleteListener { masterTask ->
+                                                    if (masterTask.isSuccessful)
+                                                        onLoad()
+                                                    else {
+                                                        showSnackBarMessage(
+                                                            masterTask.exception?.localizedMessage
+                                                                ?: getString(R.string.stringUnknownError)
+                                                        )
+                                                    }
                                                 }
-                                            }
+                                        } else {
+                                            onLoad()
+                                        }
                                     } else {
                                         showSnackBarMessage(
                                             it.exception?.localizedMessage

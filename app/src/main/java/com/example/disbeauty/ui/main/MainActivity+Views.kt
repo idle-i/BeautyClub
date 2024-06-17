@@ -1,5 +1,6 @@
 package com.example.disbeauty.ui.main
 
+import android.content.Context
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -13,6 +14,7 @@ import com.example.disbeauty.data.TempData
 import com.example.disbeauty.data.dto.Category
 import com.example.disbeauty.data.dto.Service
 import com.example.disbeauty.data.firebase.FirebaseInstances
+import com.example.disbeauty.ui.city.CityActivity
 import com.example.disbeauty.ui.history.HistoryActivity
 import com.example.disbeauty.ui.loading.LoadingActivity
 import com.example.disbeauty.ui.masters.MastersActivity
@@ -33,6 +35,17 @@ fun MainActivity.showViews() {
 
             override fun onAnimationEnd(p0: Animation?) {
                 configureRecycler(MainRecyclerState.CATEGORIES)
+
+                val userCity = getSharedPreferences("data", Context.MODE_PRIVATE)
+                    .getString("userCity", "KjUCtYpeCDMSSYPu4oVv")
+
+                userCity?.let {
+                    getCity(it) { city ->
+                        binding.locationContainer.visibility = View.VISIBLE
+
+                        binding.locationLabel.text = city.name
+                    }
+                }
             }
 
             override fun onAnimationRepeat(p0: Animation?) {}
@@ -153,6 +166,12 @@ fun MainActivity.addOnClickListeners() {
 
     binding.historyButton.setOnClickListener {
         showHistoryActivity()
+    }
+
+    binding.locationContainer.setOnClickListener {
+        if (binding.locationContainer.visibility == View.VISIBLE) {
+            startActivity(CityActivity::class.java)
+        }
     }
 
     binding.backView.setOnClickListener {

@@ -36,6 +36,7 @@
     <string name="stringToMain">На главную</string>
     <string name="stringServiceTitle">Услуга</string>
     <string name="stringMaster">Мастер</string>
+    <string name="stringClient">Клиент</string>
     <string name="stringPrice">Цена</string>
     <string name="stringAppointmentsHistory">История записей</string>
     <string name="stringUpcoming">Предстоящие</string>
@@ -51,4 +52,10 @@
     <string name="stringEnterMessageHint">Введите сообщение...</string>
     <string name="stringServicesChange">Управление услугами</string>
     <string name="stringSelectServices">Выберите услуги, которые вы предоставляете</string>
+    <string name="stringCantChangeWorkingTimeHaveAppointments">Есть активные записи, не попадающие в это рабочее время</string>
+    <string name="stringSelectCity">Выберите свой город</string>
+    <string name="stringNoMasterInCity">К сожалению в Вашем городе нет мастеров, которые оказывают данную услугу</string>
+    <string name="stringCity">Город</string>
+    <string name="stringCancel">Отменить запись</string>
+    <string name="stringAppointmentHasBeenCanceled">Запись была отменена</string>
 </resources>
