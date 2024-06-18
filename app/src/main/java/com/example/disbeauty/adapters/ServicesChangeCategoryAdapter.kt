@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.disbeauty.R
 import com.example.disbeauty.data.dto.Category
 import com.example.disbeauty.data.dto.Service
-import com.example.disbeauty.databinding.ItemMainListBinding
 import com.example.disbeauty.databinding.ItemServicesChangeCategoryBinding
 
 class ServicesChangeCategoryAdapter(
@@ -55,6 +54,7 @@ class ServicesChangeCategoryAdapter(
     override fun getItemCount() = categories.size
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val binding: ItemServicesChangeCategoryBinding = ItemServicesChangeCategoryBinding.bind(itemView)
+        val binding: ItemServicesChangeCategoryBinding =
+            ItemServicesChangeCategoryBinding.bind(itemView)
     }
 }

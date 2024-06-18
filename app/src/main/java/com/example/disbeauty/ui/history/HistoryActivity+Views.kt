@@ -11,9 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.disbeauty.R
 import com.example.disbeauty.adapters.HistoryAdapter
 import com.example.disbeauty.data.dto.Order
-import com.example.disbeauty.ui.city.CityActivity
 import com.example.disbeauty.ui.info.InfoActivity
-import com.example.disbeauty.ui.profile.addOnClickListeners
 import com.example.disbeauty.utils.dpToPx
 import java.util.Calendar
 

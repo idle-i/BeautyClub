@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="20dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="24dp">
+
+        <TextView
+            android:id="@+id/titleLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/stringReviewDialogTitle"
+            android:textColor="@color/colorText"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/reviewInput"
+            style="@style/BaseEditTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="start"
+            android:hint="@string/stringReviewInputHint"
+            android:imeOptions="actionDone"
+            android:inputType="textMultiLine"
+            android:maxLines="5"
+            android:paddingVertical="20dp"
+            android:scrollbars="vertical"
+            android:scrollHorizontally="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/titleLabel" />
+
+        <RatingBar
+            android:id="@+id/reviewRatingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:max="5"
+            android:numStars="5"
+            android:progressBackgroundTint="@color/colorGoldSecondary"
+            android:progressTint="@color/colorGold"
+            android:rating="0"
+            android:scaleX="0.8"
+            android:scaleY="0.8"
+            android:secondaryProgressTint="@color/colorGold"
+            android:stepSize="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/reviewInput" />
+
+        <TextView
+            android:id="@+id/cancelButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:text="@string/stringCancel"
+            android:textAllCaps="true"
+            android:textColor="@color/colorText"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toStartOf="@id/confirmButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/reviewRatingBar" />
+
+        <TextView
+            android:id="@+id/confirmButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:text="@string/stringSendReview"
+            android:textAllCaps="true"
+            android:textColor="@color/colorAccent"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/cancelButton"
+            app:layout_constraintTop_toBottomOf="@id/reviewRatingBar" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

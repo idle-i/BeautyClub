@@ -114,7 +114,9 @@ fun StartActivity.signUp(asMaster: Boolean, onLoad: () -> Unit) {
 
                                             FirebaseInstances.firestore
                                                 .collection(FirebaseConstants.mastersCollection)
-                                                .document(FirebaseInstances.auth.currentUser?.uid ?: "")
+                                                .document(
+                                                    FirebaseInstances.auth.currentUser?.uid ?: ""
+                                                )
                                                 .set(master)
                                                 .addOnCompleteListener { masterTask ->
                                                     if (masterTask.isSuccessful)

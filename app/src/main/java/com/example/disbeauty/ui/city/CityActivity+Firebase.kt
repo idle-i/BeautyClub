@@ -1,7 +1,6 @@
 package com.example.disbeauty.ui.city
 
 import com.example.disbeauty.R
-import com.example.disbeauty.data.dto.City
 import com.example.disbeauty.data.firebase.FirebaseConstants
 import com.example.disbeauty.data.firebase.FirebaseInstances
 import com.google.android.gms.tasks.Task

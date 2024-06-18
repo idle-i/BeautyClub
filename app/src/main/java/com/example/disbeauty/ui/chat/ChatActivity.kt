@@ -5,7 +5,7 @@ import com.example.disbeauty.base.BaseActivity
 import com.example.disbeauty.data.dto.Message
 import com.example.disbeauty.databinding.ActivityChatBinding
 
-class ChatActivity: BaseActivity() {
+class ChatActivity : BaseActivity() {
 
     lateinit var binding: ActivityChatBinding
 

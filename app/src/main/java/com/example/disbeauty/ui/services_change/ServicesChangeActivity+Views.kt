@@ -86,12 +86,14 @@ fun ServicesChangeActivity.addOnClickListeners() {
 }
 
 private fun ServicesChangeActivity.updateMasterService(service: Service, isSelected: Boolean) {
-    TempData.currentMaster.services?.let {  masterServices ->
-        if (isSelected)
-            service.id?.let { serviceId -> masterServices.add(serviceId) }
-        else
-            masterServices.remove(service.id)
-    }
+    val services = TempData.currentMaster.services ?: mutableListOf()
+
+    if (isSelected)
+        service.id?.let { serviceId -> services.add(serviceId) }
+    else
+        services.remove(service.id)
+
+    TempData.currentMaster.services = services
 
     updateMaster(TempData.currentMaster)
 }

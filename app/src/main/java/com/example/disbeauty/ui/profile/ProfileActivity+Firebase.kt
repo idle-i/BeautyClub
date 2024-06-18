@@ -3,10 +3,9 @@ package com.example.disbeauty.ui.profile
 import com.example.disbeauty.R
 import com.example.disbeauty.data.dto.City
 import com.example.disbeauty.data.dto.Master
+import com.example.disbeauty.data.dto.Review
 import com.example.disbeauty.data.firebase.FirebaseConstants
 import com.example.disbeauty.data.firebase.FirebaseInstances
-import com.example.disbeauty.ui.appointments.AppointmentsActivity
-import com.example.disbeauty.ui.main.MainActivity
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.QuerySnapshot
 import java.util.Calendar
@@ -66,5 +65,22 @@ fun ProfileActivity.getCity(id: String, onLoad: (City) -> Unit) {
                     task.exception?.localizedMessage
                         ?: getString(R.string.stringUnknownError)
                 )
+        }
+}
+
+fun ProfileActivity.getReviews(onLoad: (List<Review>) -> Unit) {
+    FirebaseInstances.firestore
+        .collection(FirebaseConstants.reviewCollection)
+        .whereEqualTo(FirebaseConstants.masterIdField, FirebaseInstances.auth.currentUser?.uid)
+        .get()
+        .addOnCompleteListener {
+            if (it.isSuccessful) {
+                onLoad(it.result.toObjects(Review::class.java))
+            } else {
+                showSnackBarMessage(
+                    it.exception?.localizedMessage
+                        ?: getString(R.string.stringUnknownError)
+                )
+            }
         }
 }

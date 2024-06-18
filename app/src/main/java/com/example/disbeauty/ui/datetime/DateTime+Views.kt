@@ -81,8 +81,8 @@ private fun DateTimeActivity.showDatePickerDialog() {
 private fun DateTimeActivity.showTimeSelect() {
     val calendar: Calendar = selectedDateTime
 
-    getMaster {
-        val master = it.result.toObject(Master::class.java) ?: Master()
+    getMaster { masterTask ->
+        val master = masterTask.result.toObject(Master::class.java) ?: Master()
 
         val startHour = master.workingStartHour ?: 9
         val endHour = master.workingEndHour ?: 21
@@ -111,7 +111,10 @@ private fun DateTimeActivity.showTimeSelect() {
                 adapter = TimeAdapter(
                     this@showTimeSelect,
                     startHour, endHour,
-                    appointments.result.toObjects(Order::class.java).map { order -> order.time },
+                    appointments.result
+                        .toObjects(Order::class.java)
+                        .filter { it.canceled == false }
+                        .map { order -> order.time },
                     calendar
                 ) { selected ->
                     selectedDateTime.set(Calendar.HOUR_OF_DAY, selected)

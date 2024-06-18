@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.disbeauty.R
 import com.example.disbeauty.adapters.CitiesAdapter
 import com.example.disbeauty.data.dto.City
-import com.example.disbeauty.data.dto.Service
 import com.example.disbeauty.ui.main.MainActivity
 import com.example.disbeauty.utils.dpToPx
 

@@ -33,6 +33,23 @@ fun MastersActivity.addOnClickListeners() {
 }
 
 fun MastersActivity.showViews() {
+    binding.mastersViewPager.apply {
+        orientation = ViewPager2.ORIENTATION_HORIZONTAL
+
+        offscreenPageLimit = 3
+        clipToPadding = false
+        clipChildren = false
+
+        getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
+        setPadding(dpToPx(64), 0, dpToPx(64), 0)
+
+        setPageTransformer { page, position ->
+            page.scaleY = 1 - (0.2f * abs(position))
+        }
+
+        adapter = MastersAdapter(this@showViews, masters)
+    }
+
     val fadeInAnimation: Animation = AnimationUtils.loadAnimation(
         this,
         R.anim.fade_in
@@ -54,35 +71,31 @@ fun MastersActivity.showViews() {
                             "KjUCtYpeCDMSSYPu4oVv"
                         ) ?: "KjUCtYpeCDMSSYPu4oVv"
                 ) {
+                    val localMasters = it.result.toObjects(Master::class.java)
+
                     addOnClickListeners()
 
-                    masters = it.result.toObjects(Master::class.java)
+                    localMasters
+                        .forEach { master ->
+                            getReviews(master.id ?: "") { reviews ->
+                                if (reviews.isNotEmpty()) {
+                                    master.rating = (reviews.mapNotNull { review -> review.rating }
+                                        .sum() / reviews.size).toFloat()
+                                }
+                                masters.add(master)
+
+                                binding.mastersViewPager.adapter?.notifyDataSetChanged()
+                            }
+                        }
 
                     binding.masterProgressBar.visibility = View.GONE
 
-                    noMasters = masters.isEmpty()
+                    noMasters = localMasters.isEmpty()
 
-                    if (masters.isEmpty()) {
+                    if (localMasters.isEmpty()) {
                         binding.noMastersLabel.visibility = View.VISIBLE
                     } else {
                         binding.confirmButton.visibility = View.VISIBLE
-
-                        binding.mastersViewPager.apply {
-                            orientation = ViewPager2.ORIENTATION_HORIZONTAL
-
-                            offscreenPageLimit = 3
-                            clipToPadding = false
-                            clipChildren = false
-
-                            getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
-                            setPadding(dpToPx(64), 0, dpToPx(64), 0)
-
-                            setPageTransformer { page, position ->
-                                page.scaleY = 1 - (0.2f * abs(position))
-                            }
-
-                            adapter = MastersAdapter(this@showViews, masters)
-                        }
                     }
 
                 }

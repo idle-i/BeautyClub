@@ -6,11 +6,13 @@ object FirebaseConstants {
     const val citiesCollection: String = "cities"
     const val mastersCollection: String = "masters"
     const val appointmentsCollection: String = "appointments"
+    const val reviewCollection: String = "review"
     const val messagesCollection: String = "messages"
     const val usersCollection: String = "users"
 
     const val idField: String = "id"
     const val userIdField: String = "userId"
+    const val orderIdField: String = "orderId"
     const val fromUserIdField: String = "fromUserId"
     const val toUserIdField: String = "toUserId"
     const val timestampField: String = "timestamp"

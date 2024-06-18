@@ -6,13 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.disbeauty.R
-import com.example.disbeauty.data.dto.Category
 import com.example.disbeauty.data.dto.Message
 import com.example.disbeauty.data.firebase.FirebaseInstances
 import com.example.disbeauty.databinding.ItemChatMessageBinding
-import com.example.disbeauty.databinding.ItemMainListBinding
 import java.text.SimpleDateFormat
-import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 class ChatAdapter(

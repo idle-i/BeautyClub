@@ -56,6 +56,13 @@
     <string name="stringSelectCity">Выберите свой город</string>
     <string name="stringNoMasterInCity">К сожалению в Вашем городе нет мастеров, которые оказывают данную услугу</string>
     <string name="stringCity">Город</string>
-    <string name="stringCancel">Отменить запись</string>
+    <string name="stringCancelAppointment">Отменить запись</string>
+    <string name="stringCancel">Отмена</string>
     <string name="stringAppointmentHasBeenCanceled">Запись была отменена</string>
+    <string name="stringReviewThisAppointment">Оцените оказанную услугу</string>
+    <string name="stringReviewDialogTitle">Поделитесь своими впечатлениями об оказанной вам услуге</string>
+    <string name="stringSendReview">Отправить</string>
+    <string name="stringReviewInputHint">Опишите, что вам понравилось, а что не очень...</string>
+    <string name="stringSpecifyReviewRating">Укажите свою оценку</string>
+    <string name="stringReviewSended">Отзыв отправлен!</string>
 </resources>

@@ -1,11 +1,16 @@
 package com.example.disbeauty.ui.info
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import com.example.disbeauty.R
+import com.example.disbeauty.data.TempData
+import com.example.disbeauty.data.dto.Review
+import com.example.disbeauty.data.firebase.FirebaseInstances
+import com.example.disbeauty.databinding.DialogReviewBinding
 import com.example.disbeauty.ui.chat.ChatActivity
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -24,36 +29,47 @@ fun InfoActivity.showViews() {
 
             override fun onAnimationEnd(p0: Animation?) {
                 getOrder(orderId) { order ->
-                    binding.mainContainer.visibility = View.VISIBLE
-                    binding.progressBar.visibility = View.GONE
+                    getReviews(orderId) { reviews ->
+                        binding.mainContainer.visibility = View.VISIBLE
+                        binding.progressBar.visibility = View.GONE
 
-                    binding.serviceLabel.text = order.name
+                        binding.serviceLabel.text = order.name
 
-                    binding.masterTitleLabel.text = getString(
-                        if (isMaster)
-                            R.string.stringClient
-                        else
-                            R.string.stringMaster
-                    )
-                    binding.masterLabel.text = if (isMaster) order.userName else order.masterName
+                        binding.masterTitleLabel.text = getString(
+                            if (isMaster)
+                                R.string.stringClient
+                            else
+                                R.string.stringMaster
+                        )
+                        binding.masterLabel.text =
+                            if (isMaster) order.userName else order.masterName
 
-                    if (order.time < Calendar.getInstance().timeInMillis || order.canceled == true) {
-                        binding.cancelButtonLayout.visibility = View.GONE
+                        if (order.time < Calendar.getInstance().timeInMillis || order.canceled == true) {
+                            binding.cancelButtonLayout.visibility = View.GONE
+                        }
+
+                        if (order.time < Calendar.getInstance().timeInMillis
+                            && order.canceled == false
+                            && !isMaster
+                            && reviews.isEmpty()
+                        ) {
+                            binding.reviewButtonLayout.visibility = View.VISIBLE
+                        }
+
+                        binding.dateLabel.text =
+                            SimpleDateFormat(
+                                "dd MMM yyyy",
+                                Locale.getDefault()
+                            ).format(order.time)
+
+                        binding.timeLabel.text =
+                            SimpleDateFormat(
+                                "HH:mm",
+                                Locale.getDefault()
+                            ).format(order.time)
+
+                        this@showViews.order = order
                     }
-
-                    binding.dateLabel.text =
-                        SimpleDateFormat(
-                            "dd MMM yyyy",
-                            Locale.getDefault()
-                        ).format(order.time)
-
-                    binding.timeLabel.text =
-                        SimpleDateFormat(
-                            "HH:mm",
-                            Locale.getDefault()
-                        ).format(order.time)
-
-                    this@showViews.order = order
                 }
 
                 addOnClickListeners()
@@ -87,6 +103,46 @@ fun InfoActivity.addOnClickListeners() {
             intent.putExtra("shouldUpdate", true)
             setResult(Activity.RESULT_OK, intent)
             finish()
+        }
+    }
+
+    binding.reviewButton.setOnClickListener {
+        AlertDialog.Builder(this).apply {
+            val alertBinding =
+                DialogReviewBinding.bind(layoutInflater.inflate(R.layout.dialog_review, null))
+            setView(alertBinding.root)
+
+            create().apply {
+                window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+                alertBinding.confirmButton.setOnClickListener {
+                    if (alertBinding.reviewRatingBar.rating.toInt() == 0) {
+                        showSnackBarMessage(getString(R.string.stringSpecifyReviewRating))
+                    } else {
+                        sendReview(
+                            Review(
+                                order?.masterId,
+                                FirebaseInstances.auth.currentUser?.uid,
+                                TempData.currentUser.name,
+                                orderId,
+                                alertBinding.reviewRatingBar.rating.toInt(),
+                                alertBinding.reviewInput.text.toString(),
+                                Calendar.getInstance().timeInMillis
+                            )
+                        ) {
+                            binding.reviewButtonLayout.visibility = View.GONE
+                            showSnackBarMessage(getString(R.string.stringReviewSended))
+                            dismiss()
+                        }
+                    }
+                }
+
+                alertBinding.cancelButton.setOnClickListener {
+                    dismiss()
+                }
+
+                show()
+            }
         }
     }
 }

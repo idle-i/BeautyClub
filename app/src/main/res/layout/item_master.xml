@@ -28,12 +28,64 @@
         android:id="@+id/nameLabel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:ellipsize="end"
         android:gravity="center"
         android:maxLines="2"
         android:textColor="@color/colorText"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@id/ratingLayout"
         app:layout_constraintEnd_toEndOf="@id/avatarLayout"
         app:layout_constraintStart_toStartOf="@id/avatarLayout" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/ratingLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:cardBackgroundColor="@color/colorGold"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="6dp">
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginEnd="6dp"
+                android:src="@drawable/ic_star"
+                app:tint="@color/colorWhite" />
+
+            <TextView
+                android:id="@+id/ratingLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="6dp"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="2"
+                android:textColor="@color/colorWhite"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/avatarLayout"
+                app:layout_constraintStart_toStartOf="@id/avatarLayout" />
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:scaleX="1.5"
+                android:scaleY="1.5"
+                android:src="@drawable/ic_arrow_right"
+                app:tint="@color/colorWhite" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

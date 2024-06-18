@@ -20,6 +20,7 @@ import com.example.disbeauty.data.dto.Order
 import com.example.disbeauty.data.firebase.FirebaseConstants
 import com.example.disbeauty.data.firebase.FirebaseInstances
 import com.example.disbeauty.ui.city.CityActivity
+import com.example.disbeauty.ui.reviews.ReviewsActivity
 import com.example.disbeauty.ui.services_change.ServicesChangeActivity
 import java.util.Calendar
 import java.util.Date
@@ -38,53 +39,65 @@ fun ProfileActivity.showViews() {
             override fun onAnimationEnd(p0: Animation?) {
                 getProfile { master ->
                     getCity(master.city ?: "KjUCtYpeCDMSSYPu4oVv") { city ->
-                        binding.profileProgressBar.visibility = View.GONE
-                        binding.contentView.visibility = View.VISIBLE
-                        binding.avatarLayout.visibility = View.INVISIBLE
+                        getReviews { reviews ->
+                            binding.profileProgressBar.visibility = View.GONE
+                            binding.contentView.visibility = View.VISIBLE
+                            binding.avatarLayout.visibility = View.INVISIBLE
 
-                        if (!master.avatar.isNullOrEmpty())
-                            Glide
-                                .with(this@showViews)
-                                .load(master.avatar)
-                                .addListener(object : RequestListener<Drawable> {
-                                    override fun onLoadFailed(
-                                        e: GlideException?,
-                                        model: Any?,
-                                        target: Target<Drawable>?,
-                                        isFirstResource: Boolean
-                                    ): Boolean {
-                                        return true
-                                    }
+                            if (reviews.isEmpty()) {
+                                binding.ratingLayout.visibility = View.GONE
+                            } else {
+                                binding.ratingLabel.text =
+                                    (reviews.mapNotNull { review -> review.rating }
+                                        .sum() / reviews.size).toFloat().toString()
+                            }
 
-                                    override fun onResourceReady(
-                                        resource: Drawable?,
-                                        model: Any?,
-                                        target: Target<Drawable>?,
-                                        dataSource: DataSource?,
-                                        isFirstResource: Boolean
-                                    ): Boolean {
-                                        binding.avatarLayout.visibility = View.VISIBLE
-                                        binding.avatarImage.setImageDrawable(resource)
+                            if (!master.avatar.isNullOrEmpty())
+                                Glide
+                                    .with(this@showViews)
+                                    .load(master.avatar)
+                                    .addListener(object : RequestListener<Drawable> {
+                                        override fun onLoadFailed(
+                                            e: GlideException?,
+                                            model: Any?,
+                                            target: Target<Drawable>?,
+                                            isFirstResource: Boolean
+                                        ): Boolean {
+                                            return true
+                                        }
 
-                                        return true
-                                    }
-                                })
-                                .into(binding.avatarImage)
+                                        override fun onResourceReady(
+                                            resource: Drawable?,
+                                            model: Any?,
+                                            target: Target<Drawable>?,
+                                            dataSource: DataSource?,
+                                            isFirstResource: Boolean
+                                        ): Boolean {
+                                            binding.avatarLayout.visibility = View.VISIBLE
+                                            binding.avatarImage.setImageDrawable(resource)
 
-                        binding.nameLabel.text = master.name
-                        binding.emailInput.setText(FirebaseInstances.auth.currentUser?.email ?: "")
-                        binding.phoneInput.setText(master.phoneNumber)
+                                            return true
+                                        }
+                                    })
+                                    .into(binding.avatarImage)
 
-                        workingStartTime =
-                            listOf(master.workingStartHour ?: 9, master.workingStartMinute ?: 0)
-                        workingEndTime =
-                            listOf(master.workingEndHour ?: 21, master.workingEndMinute ?: 0)
+                            binding.nameLabel.text = master.name
+                            binding.emailInput.setText(
+                                FirebaseInstances.auth.currentUser?.email ?: ""
+                            )
+                            binding.phoneInput.setText(master.phoneNumber)
 
-                        binding.locationLabel.text = city.name
+                            workingStartTime =
+                                listOf(master.workingStartHour ?: 9, master.workingStartMinute ?: 0)
+                            workingEndTime =
+                                listOf(master.workingEndHour ?: 21, master.workingEndMinute ?: 0)
 
-                        setWorkingTimeLabel()
+                            binding.locationLabel.text = city.name
 
-                        this@showViews.master = master
+                            setWorkingTimeLabel()
+
+                            this@showViews.master = master
+                        }
                     }
                 }
 
@@ -105,6 +118,12 @@ fun ProfileActivity.addOnClickListeners() {
 
     binding.workingTimeLayout.setOnClickListener {
         showWorkingTimeStartPickerDialog()
+    }
+
+    binding.ratingLayout.setOnClickListener {
+        val intent = Intent(this, ReviewsActivity::class.java)
+        intent.putExtra("masterId", master.id)
+        startActivity(intent)
     }
 
     binding.locationLayout.setOnClickListener {

@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.disbeauty.R
 import com.example.disbeauty.data.dto.City
 import com.example.disbeauty.databinding.ItemCityBinding
-import com.example.disbeauty.databinding.ItemMainListBinding
 
 class CitiesAdapter(
     private val context: Context,

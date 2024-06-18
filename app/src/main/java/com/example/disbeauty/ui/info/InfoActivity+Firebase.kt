@@ -1,16 +1,10 @@
 package com.example.disbeauty.ui.info
 
 import com.example.disbeauty.R
-import com.example.disbeauty.data.dto.City
-import com.example.disbeauty.data.dto.Master
 import com.example.disbeauty.data.dto.Order
+import com.example.disbeauty.data.dto.Review
 import com.example.disbeauty.data.firebase.FirebaseConstants
 import com.example.disbeauty.data.firebase.FirebaseInstances
-import com.example.disbeauty.ui.appointments.AppointmentsActivity
-import com.example.disbeauty.ui.main.MainActivity
-import com.google.android.gms.tasks.Task
-import com.google.firebase.firestore.QuerySnapshot
-import java.util.Calendar
 
 fun InfoActivity.getOrder(orderId: String, onLoad: (Order) -> Unit) {
     FirebaseInstances.firestore
@@ -35,6 +29,40 @@ fun InfoActivity.cancelOrder(orderId: String, onLoad: () -> Unit) {
         .collection(FirebaseConstants.appointmentsCollection)
         .document(orderId)
         .update(FirebaseConstants.canceledField, true)
+        .addOnCompleteListener {
+            if (it.isSuccessful) {
+                onLoad()
+            } else {
+                showSnackBarMessage(
+                    it.exception?.localizedMessage
+                        ?: getString(R.string.stringUnknownError)
+                )
+            }
+        }
+}
+
+fun InfoActivity.getReviews(orderId: String, onLoad: (List<Review>) -> Unit) {
+    FirebaseInstances.firestore
+        .collection(FirebaseConstants.reviewCollection)
+        .whereEqualTo(FirebaseConstants.userIdField, FirebaseInstances.auth.currentUser?.uid)
+        .whereEqualTo(FirebaseConstants.orderIdField, orderId)
+        .get()
+        .addOnCompleteListener {
+            if (it.isSuccessful) {
+                onLoad(it.result.toObjects(Review::class.java))
+            } else {
+                showSnackBarMessage(
+                    it.exception?.localizedMessage
+                        ?: getString(R.string.stringUnknownError)
+                )
+            }
+        }
+}
+
+fun InfoActivity.sendReview(review: Review, onLoad: () -> Unit) {
+    FirebaseInstances.firestore
+        .collection(FirebaseConstants.reviewCollection)
+        .add(review)
         .addOnCompleteListener {
             if (it.isSuccessful) {
                 onLoad()

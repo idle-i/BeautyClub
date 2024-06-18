@@ -5,9 +5,12 @@
     <color name="colorPrimary">#222222</color>
     <color name="colorPrimaryDark">#222222</color>
     <color name="colorText">#222222</color>
+    <color name="colorTextSecondary">#99222222</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorSecondary">#4D222222</color>
     <color name="colorSecondaryWhite">#CCFFFFFF</color>
     <color name="colorPrimaryBackground">#0D222222</color>
     <color name="colorCanceled">#4D222222</color>
+    <color name="colorGold">#FFC107</color>
+    <color name="colorGoldSecondary">#4DFFC107</color>
 </resources>

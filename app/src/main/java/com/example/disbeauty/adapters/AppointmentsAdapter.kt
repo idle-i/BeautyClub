@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.disbeauty.R
-import com.example.disbeauty.data.dto.Category
 import com.example.disbeauty.data.dto.Order
 import com.example.disbeauty.databinding.ItemHistoryBinding
 import java.text.SimpleDateFormat

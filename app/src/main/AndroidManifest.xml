@@ -12,6 +12,9 @@
         android:theme="@style/Theme.DisBeauty"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ui.reviews.ReviewsActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.info.InfoActivity"
             android:exported="false" />
         <activity

@@ -9,7 +9,7 @@ class MastersActivity : BaseActivity() {
 
     lateinit var binding: ActivityMastersBinding
 
-    var masters: List<Master> = listOf()
+    var masters: MutableList<Master> = mutableListOf()
     var noMasters: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {

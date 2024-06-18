@@ -223,6 +223,25 @@
                     app:layout_constraintTop_toBottomOf="@id/serviceTitleLabel" />
 
                 <FrameLayout
+                    android:id="@+id/reviewButtonLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/reviewButton"
+                        style="@style/BaseButtonStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingVertical="16dp"
+                        android:text="@string/stringReviewThisAppointment"
+                        app:backgroundTint="@color/colorGold"
+                        app:icon="@drawable/ic_star"
+                        app:iconGravity="textTop"
+                        app:iconSize="32sp" />
+                </FrameLayout>
+
+                <FrameLayout
                     android:id="@+id/cancelButtonLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -231,7 +250,7 @@
                         android:id="@+id/cancelButton"
                         style="@style/BaseButtonStyle"
                         android:layout_width="match_parent"
-                        android:text="@string/stringCancel" />
+                        android:text="@string/stringCancelAppointment" />
                 </FrameLayout>
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
